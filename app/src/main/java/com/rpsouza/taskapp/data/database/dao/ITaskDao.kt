@@ -1,12 +1,12 @@
-package com.rpsouza.taskapp.data.db.dao
+package com.rpsouza.taskapp.data.database.dao
 
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.rpsouza.taskapp.data.db.entity.TaskEntity
 import com.rpsouza.taskapp.data.model.Status
+import com.rpsouza.taskapp.data.model.TaskEntity
 
-interface ITaskDao {
+interface ITaskDAO {
   @Query("SELECT * FROM task_table ORDER BY id DESC")
   suspend fun getAllTask(): List<TaskEntity>
 

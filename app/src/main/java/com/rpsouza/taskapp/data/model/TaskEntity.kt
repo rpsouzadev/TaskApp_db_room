@@ -1,8 +1,7 @@
-package com.rpsouza.taskapp.data.db.entity
+package com.rpsouza.taskapp.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.rpsouza.taskapp.data.model.Status
 
 @Entity(tableName = "task_table")
 class TaskEntity(
