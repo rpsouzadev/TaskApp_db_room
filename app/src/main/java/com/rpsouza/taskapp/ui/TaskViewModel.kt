@@ -3,35 +3,45 @@ package com.rpsouza.taskapp.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.rpsouza.taskapp.data.model.Task
-import com.rpsouza.taskapp.utils.StateView
+import com.rpsouza.taskapp.data.model.Status
+import com.rpsouza.taskapp.data.model.TaskEntity
+import com.rpsouza.taskapp.data.repository.TaskRepository
 
-class TaskViewModel : ViewModel() {
-  private val _taskList = MutableLiveData<StateView<List<Task>>>()
-  val taskList: LiveData<StateView<List<Task>>> = _taskList
+class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
+  private val _taskStateData = MutableLiveData<StateTask>()
+  val taskStateData: LiveData<StateTask> = _taskStateData
 
-  private val _taskInsert = MutableLiveData<StateView<Task>>()
-  val taskInsert: LiveData<StateView<Task>> = _taskInsert
+  private val _taskStateMessage = MutableLiveData<Int>()
+  val taskStateMessage: LiveData<Int> = _taskStateMessage
 
-  private val _taskUpdate = MutableLiveData<StateView<Task>>()
-  val taskUpdate: LiveData<StateView<Task>> = _taskUpdate
-
-  private val _taskDelete = MutableLiveData<StateView<Task>>()
-  val taskDelete: LiveData<StateView<Task>> = _taskDelete
+  fun insertOrUpdateTask(id: Long, description: String, status: Status) {
+    if (id == 0L) {
+      insertTask(TaskEntity(description = description, status = status))
+    } else {
+      updateTask(TaskEntity(id, description, status))
+    }
+  }
 
   fun getTasks() {
 
   }
 
-  fun insertTask(task: Task) {
+  private fun insertTask(task: TaskEntity) {
 
   }
 
-  fun updateTask(task: Task) {
+  private fun updateTask(task: TaskEntity) {
 
   }
 
-  fun deleteTask(task: Task) {
+  fun deleteTask(task: TaskEntity) {
 
   }
+}
+
+sealed class StateTask {
+  object Inserted: StateTask()
+  object Updated: StateTask()
+  object Deleted: StateTask()
+  object Listed: StateTask()
 }

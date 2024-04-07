@@ -7,17 +7,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rpsouza.taskapp.R
+import com.rpsouza.taskapp.data.database.AppDatabase
 import com.rpsouza.taskapp.data.model.Status
 import com.rpsouza.taskapp.data.model.Task
+import com.rpsouza.taskapp.data.repository.TaskRepository
+import com.rpsouza.taskapp.databinding.FragmentTasksBinding
 import com.rpsouza.taskapp.ui.adapter.TaskAdapter
 import com.rpsouza.taskapp.utils.StateView
 import com.rpsouza.taskapp.utils.showBottomSheet
-import com.rpsouza.taskapp.databinding.FragmentTasksBinding
 
 class TasksFragment : Fragment() {
   private var _binding: FragmentTasksBinding? = null
@@ -25,7 +29,20 @@ class TasksFragment : Fragment() {
 
   private lateinit var taskAdapter: TaskAdapter
 
-  private val viewModel: TaskViewModel by activityViewModels()
+  private val viewModel: TaskViewModel by viewModels {
+    object : ViewModelProvider.Factory {
+      override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(TaskViewModel::class.java)) {
+          val database = AppDatabase.getDatabase(requireContext())
+          val repository = TaskRepository(database.taskDAO())
+
+          @Suppress("UNCHECKED_CAST")
+          return TaskViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+      }
+    }
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
