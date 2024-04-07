@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 class TaskEntity(
   @PrimaryKey(true)
   var id: Long = 0,
-  val description: String,
-  val status: Status
+  var description: String,
+  var status: Status
 )

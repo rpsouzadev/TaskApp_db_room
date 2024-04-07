@@ -14,7 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.rpsouza.taskapp.R
 import com.rpsouza.taskapp.data.database.AppDatabase
 import com.rpsouza.taskapp.data.model.Status
-import com.rpsouza.taskapp.data.model.Task
+import com.rpsouza.taskapp.data.model.TaskEntity
 import com.rpsouza.taskapp.data.repository.TaskRepository
 import com.rpsouza.taskapp.databinding.FragmentFormTaskBinding
 import com.rpsouza.taskapp.utils.initToolbar
@@ -24,7 +24,7 @@ class FormTaskFragment : BaseFragment() {
   private var _binding: FragmentFormTaskBinding? = null
   private val binding get() = _binding!!
 
-  private lateinit var task: Task
+  private lateinit var task: TaskEntity
   private var status: Status = Status.TODO
   private var newTask: Boolean = true
 
@@ -65,7 +65,9 @@ class FormTaskFragment : BaseFragment() {
 
   private fun getArgs() {
     args.task?.let {
-      this.task = it
+      this.task.id = it.id
+      this.task.description = it.description
+      this.status = it.status
       configTask()
     }
   }
@@ -110,14 +112,11 @@ class FormTaskFragment : BaseFragment() {
       hideKeyboard()
       binding.progressBar.isVisible = true
 
-      if (newTask) task = Task()
-      task.description = description
-      task.status = status
 
       if (newTask) {
-        viewModel.insertTask(task)
+        viewModel.insertOrUpdateTask(description = description, status = status)
       } else {
-        viewModel.updateTask(task)
+        viewModel.insertOrUpdateTask(task.id, description, status)
       }
     } else {
       showBottomSheet(message = getString(R.string.description_empty_form_task_fragment))
@@ -125,22 +124,16 @@ class FormTaskFragment : BaseFragment() {
   }
 
   private fun observeViewModel() {
-    viewModel.taskInsert.observe(viewLifecycleOwner) {
-      Toast.makeText(
-        requireContext(),
-        R.string.text_save_sucess_form_task_fragment,
-        Toast.LENGTH_SHORT
-      ).show()
-
-      findNavController().popBackStack()
+    viewModel.taskStateData.observe(viewLifecycleOwner) { stateTask ->
+      if (stateTask == StateTask.Inserted || stateTask == StateTask.Updated) {
+        findNavController().popBackStack()
+      }
     }
 
-    viewModel.taskUpdate.observe(viewLifecycleOwner) {
-      binding.progressBar.isVisible = false
-
+    viewModel.taskStateMessage.observe(viewLifecycleOwner) { message ->
       Toast.makeText(
         requireContext(),
-        R.string.text_update_sucess_form_task_fragment,
+        message,
         Toast.LENGTH_SHORT
       ).show()
     }
