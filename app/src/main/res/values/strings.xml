@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">TaskApp</string>
+
+    <!--    Status Task-->
+    <string name="status_task_todo">A Fazer</string>
+    <string name="status_task_doing">Fazendo</string>
+    <string name="status_task_done">Feito</string>
+
+    <!--    Generic-->
+    <string name="text_title_warning">Atenção</string>
+    <string name="text_button_warning">Entendi</string>
+    <string name="email_text">E-mail</string>
+    <string name="email_hint">Digite seu e-mail</string>
+    <string name="email_empty">Digite o email</string>
+    <string name="password_text">Senha</string>
+    <string name="password_empty">Digite a senha</string>
+    <string name="password_hint">Digite sua senha</string>
+    <string name="error_generic">Houve um erro, tente novamente mais tarde.</string>
+    <string name="text_button_dialog_confirm">Confirmar</string>
+    <string name="text_title_dialog_delete">Deseja remover está tarefa?</string>
+    <string name="text_message_dialog_delete">Aperte em confirmar para remover a tarefa.</string>
+
+
+    <!--    Home Fragment-->
+    <string name="text_title_dialog_confirm_log_out">Deseja sair da sua conta?</string>
+    <string name="text_message_dialog_confirm_log_out">Para sair aperte no botão abaixo para confirmar</string>
+
+    <!--    Recover Fragment-->
+    <string name="text_message_recover_account">Pronto, enviamos um link de recuperação para seu email</string>
+
+    <!--    Erros Firebase Authentication-->
+    <string name="account_not_registered_register_fragment">Nenhuma conta encontrada com este e-mail.</string>
+    <string name="invalid_email_register_fragment">Insira um e-mail válido.</string>
+    <string name="invalid_password_register_fragment">Senha inválida, tente novamente.</string>
+    <string name="email_in_use_register_fragment">Este e-mail já está em uso.</string>
+    <string name="strong_password_register_fragment">Insira uma senha mais forte.</string>
+
+
+    <!--    Form Task Fragment-->
+    <string name="description_empty_form_task_fragment">Digite sua tarefa.</string>
+    <string name="toolbar_title_edit_form_task_fragment">Atualizar tarefa.</string>
+    <string name="text_save_sucess_form_task_fragment">Tarefa criada com sucesso!</string>
+    <string name="text_update_sucess_form_task_fragment">Tarefa atualizada com sucesso!</string>
+    <string name="btn_Login">Entrar</string>
+    <string name="create_account">Criar conta</string>
+    <string name="forgot_password">Esqueceu a senha?</string>
+    <string name="description">Descrição</string>
+    <string name="task_hint">Estudar kotlin</string>
+    <string name="status">Status</string>
+    <string name="task_todo">A Fazer</string>
+    <string name="task_doing">Fazendo</string>
+    <string name="task_done">Feito</string>
+    <string name="save">Salvar</string>
+    <string name="send">Enviar</string>
+    <string name="description_recover_account">Digite seu e-mail abaixo para receber as \ninstruções para recuperação da conta.</string>
+    <string name="recover_account">Recuperar conta</string>
+    <string name="btn_new_task">Botão adicionar nova task</string>
+    <string name="btn_remove">Remover</string>
+    <string name="btn_edit">Editar</string>
+    <string name="btn_details">Detalhes</string>
+    <string name="move_next_status">Mover para o proximo status</string>
+    <string name="move_previous_status">Voltar para o status anterio</string>
+    <string name="new_task">Nova tarefa</string>
+    <string name="text_list_task_empty">Nenhuma tarefa cadastrada.</string>
+    <string name="text_list_task_loading">Aguarde estamos cerregando as tarefas.</string>
+    <string name="text_remove_task_successful">Aguarde estamos cerregando as tarefas.</string>
+</resources>
