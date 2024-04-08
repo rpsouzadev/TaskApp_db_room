@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rpsouza.taskapp.R
 import com.rpsouza.taskapp.data.database.AppDatabase
 import com.rpsouza.taskapp.data.model.Task
+import com.rpsouza.taskapp.data.model.TaskEntity
 import com.rpsouza.taskapp.data.repository.TaskRepository
 import com.rpsouza.taskapp.databinding.FragmentTasksBinding
 import com.rpsouza.taskapp.ui.adapter.TaskAdapter
@@ -26,15 +28,15 @@ class TasksFragment : Fragment() {
 
   private lateinit var taskAdapter: TaskAdapter
 
-  private val viewModel: TaskViewModel by viewModels {
+  private val viewModel: TaskListViewModel by viewModels {
     object : ViewModelProvider.Factory {
       override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TaskViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(TaskListViewModel::class.java)) {
           val database = AppDatabase.getDatabase(requireContext())
           val repository = TaskRepository(database.taskDAO())
 
           @Suppress("UNCHECKED_CAST")
-          return TaskViewModel(repository) as T
+          return TaskListViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
       }
@@ -56,7 +58,12 @@ class TasksFragment : Fragment() {
     initListener()
     initRecyclerView()
     observeViewModel()
-    viewModel.getTasks()
+
+  }
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.getAllTasks()
   }
 
   private fun initListener() {
@@ -67,7 +74,10 @@ class TasksFragment : Fragment() {
   }
 
   private fun observeViewModel() {
-
+viewModel.taskList.observe(viewLifecycleOwner) { taskList ->
+ taskAdapter.submitList(taskList)
+  listEmpty(taskList)
+}
   }
 
   private fun initRecyclerView() {
@@ -82,46 +92,40 @@ class TasksFragment : Fragment() {
     }
   }
 
-  private fun optionSelected(task: Task, option: Int) {
-    when (option) {
-      TaskAdapter.SELECT_DETAILS -> {
-        Toast.makeText(
-          requireContext(),
-          "Detalhes da task: ${task.id}",
-          Toast.LENGTH_SHORT
-        ).show()
-      }
-
-      TaskAdapter.SELECT_EDIT -> {
-        val action = TasksFragmentDirections
-          .actionTasksFragmentToFormTaskFragment(task)
-        findNavController().navigate(action)
-      }
-
-      TaskAdapter.SELECT_REMOVE -> {
-        showBottomSheet(
-          R.string.text_title_dialog_delete,
-          R.string.text_button_dialog_confirm,
-          getString(R.string.text_message_dialog_delete)
-        ) { viewModel.deleteTask(task.id) }
-      }
-    }
+  private fun optionSelected(task: TaskEntity, option: Int) {
+//    when (option) {
+//      TaskAdapter.SELECT_DETAILS -> {
+//        Toast.makeText(
+//          requireContext(),
+//          "Detalhes da task: ${task.id}",
+//          Toast.LENGTH_SHORT
+//        ).show()
+//      }
+//
+//      TaskAdapter.SELECT_EDIT -> {
+//        val action = TasksFragmentDirections
+//          .actionTasksFragmentToFormTaskFragment(Task(task.id, task.description, task.status))
+//        findNavController().navigate(action)
+//      }
+//
+//      TaskAdapter.SELECT_REMOVE -> {
+//        showBottomSheet(
+//          R.string.text_title_dialog_delete,
+//          R.string.text_button_dialog_confirm,
+//          getString(R.string.text_message_dialog_delete)
+//        ) { viewModel.deleteTask(task.id) }
+//      }
+//    }
   }
 
-  private fun setPositionRecyclerView() {
-    taskAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-      override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-        binding.rvTasks.scrollToPosition(0)
-      }
-    })
-  }
-
-  private fun listEmpty(taskList: List<Task>) {
+  private fun listEmpty(taskList: List<TaskEntity>) {
     binding.textInfo.text = if (taskList.isEmpty()) {
       getString(R.string.text_list_task_empty)
     } else {
       ""
     }
+    
+    binding.progressBar.isVisible = false
   }
 
   override fun onDestroyView() {

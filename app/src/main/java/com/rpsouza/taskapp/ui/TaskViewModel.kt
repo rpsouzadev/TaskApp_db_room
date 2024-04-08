@@ -25,10 +25,6 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     }
   }
 
-  fun getTasks() {
-
-  }
-
   private fun insertTask(task: TaskEntity) = viewModelScope.launch {
     try {
       val id = repository.insertTask(task)
@@ -56,5 +52,4 @@ sealed class StateTask {
   object Inserted: StateTask()
   object Updated: StateTask()
   object Deleted: StateTask()
-  object Listed: StateTask()
 }
