@@ -4,13 +4,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.rpsouza.taskapp.data.database.entity.TaskEntity
 import com.rpsouza.taskapp.data.model.Status
-import com.rpsouza.taskapp.data.model.TaskEntity
+import com.rpsouza.taskapp.data.model.Task
 
 @Dao
 interface ITaskDAO {
   @Query("SELECT * FROM task_table ORDER BY id DESC")
-  suspend fun getAllTask(): List<TaskEntity>
+  suspend fun getAllTask(): List<Task>
 
   @Insert(onConflict = OnConflictStrategy.IGNORE)
   suspend fun insertTask(taskEntity: TaskEntity): Long

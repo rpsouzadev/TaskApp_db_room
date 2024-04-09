@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.rpsouza.taskapp.data.database.dao.ITaskDAO
-import com.rpsouza.taskapp.data.model.TaskEntity
+import com.rpsouza.taskapp.data.database.entity.TaskEntity
 
 @Database(entities = [TaskEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {

@@ -5,13 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rpsouza.taskapp.data.model.TaskEntity
+import com.rpsouza.taskapp.data.model.Task
 import com.rpsouza.taskapp.data.repository.TaskRepository
 import kotlinx.coroutines.launch
 
 class TaskListViewModel(private val repository: TaskRepository) : ViewModel() {
-    private val _taskList = MutableLiveData<List<TaskEntity>>()
-    val taskList: LiveData<List<TaskEntity>> = _taskList
+    private val _taskList = MutableLiveData<List<Task>>()
+    val taskList: LiveData<List<Task>> = _taskList
 
     fun getAllTasks() = viewModelScope.launch {
         try {

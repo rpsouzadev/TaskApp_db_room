@@ -12,15 +12,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.rpsouza.taskapp.R
 import com.rpsouza.taskapp.data.database.AppDatabase
 import com.rpsouza.taskapp.data.model.Task
-import com.rpsouza.taskapp.data.model.TaskEntity
 import com.rpsouza.taskapp.data.repository.TaskRepository
 import com.rpsouza.taskapp.databinding.FragmentTasksBinding
 import com.rpsouza.taskapp.ui.adapter.TaskAdapter
-import com.rpsouza.taskapp.utils.showBottomSheet
 
 class TasksFragment : Fragment() {
   private var _binding: FragmentTasksBinding? = null
@@ -92,22 +89,22 @@ viewModel.taskList.observe(viewLifecycleOwner) { taskList ->
     }
   }
 
-  private fun optionSelected(task: TaskEntity, option: Int) {
-//    when (option) {
-//      TaskAdapter.SELECT_DETAILS -> {
-//        Toast.makeText(
-//          requireContext(),
-//          "Detalhes da task: ${task.id}",
-//          Toast.LENGTH_SHORT
-//        ).show()
-//      }
-//
-//      TaskAdapter.SELECT_EDIT -> {
-//        val action = TasksFragmentDirections
-//          .actionTasksFragmentToFormTaskFragment(Task(task.id, task.description, task.status))
-//        findNavController().navigate(action)
-//      }
-//
+  private fun optionSelected(task: Task, option: Int) {
+    when (option) {
+      TaskAdapter.SELECT_DETAILS -> {
+        Toast.makeText(
+          requireContext(),
+          "Detalhes da task: ${task.id}",
+          Toast.LENGTH_SHORT
+        ).show()
+      }
+
+      TaskAdapter.SELECT_EDIT -> {
+        val action = TasksFragmentDirections
+          .actionTasksFragmentToFormTaskFragment(task)
+        findNavController().navigate(action)
+      }
+
 //      TaskAdapter.SELECT_REMOVE -> {
 //        showBottomSheet(
 //          R.string.text_title_dialog_delete,
@@ -115,10 +112,10 @@ viewModel.taskList.observe(viewLifecycleOwner) { taskList ->
 //          getString(R.string.text_message_dialog_delete)
 //        ) { viewModel.deleteTask(task.id) }
 //      }
-//    }
+    }
   }
 
-  private fun listEmpty(taskList: List<TaskEntity>) {
+  private fun listEmpty(taskList: List<Task>) {
     binding.textInfo.text = if (taskList.isEmpty()) {
       getString(R.string.text_list_task_empty)
     } else {

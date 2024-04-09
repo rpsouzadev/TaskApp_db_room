@@ -7,23 +7,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.rpsouza.taskapp.data.model.Task
-import com.rpsouza.taskapp.data.model.TaskEntity
 import com.rpsouza.taskapp.databinding.ItemTaskBinding
 
-class TaskAdapter(private val taskSelected: (TaskEntity, option: Int) -> Unit) :
-  ListAdapter<TaskEntity, TaskAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class TaskAdapter(private val taskSelected: (Task, option: Int) -> Unit) :
+  ListAdapter<Task, TaskAdapter.MyViewHolder>(DIFF_CALLBACK) {
   companion object {
     const val SELECT_REMOVE: Int = 2
     const val SELECT_EDIT: Int = 3
     const val SELECT_DETAILS: Int = 4
 
-    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TaskEntity>() {
-      override fun areItemsTheSame(oldItem: TaskEntity, newItem: TaskEntity): Boolean {
+    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>() {
+      override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
         return oldItem.id == newItem.id && oldItem.description == newItem.description
       }
 
       @SuppressLint("DiffUtilEquals")
-      override fun areContentsTheSame(oldItem: TaskEntity, newItem: TaskEntity): Boolean {
+      override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
         return oldItem == newItem && oldItem.description == newItem.description
       }
 
