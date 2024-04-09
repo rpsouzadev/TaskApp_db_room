@@ -51,8 +51,15 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     }
   }
 
-  fun deleteTask(id: Long) {
+  fun deleteTask(id: Long) = viewModelScope.launch {
+    try {
+      repository.deleteTask(id)
 
+      _taskStateData.postValue(StateTask.Deleted)
+      _taskStateMessage.postValue(R.string.text_delete_sucess_form_task_fragment)
+    } catch (e: Exception) {
+      _taskStateMessage.postValue(R.string.error_generic)
+    }
   }
 }
 
